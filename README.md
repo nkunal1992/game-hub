@@ -1,32 +1,53 @@
-# React + TypeScript + Vite
+# Tic Tac Toe
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A polished, session-based Tic Tac Toe web app. Play unlimited rounds against a
+friend on the same screen, or against the computer — with named players and a
+session scoreboard that tracks wins and draws across the whole match.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Two modes** — local two-player (shared screen) or vs computer.
+- **Named players** — enter names at the start of a session; they appear on the
+  scoreboard and in round announcements.
+- **Session scoring** — cumulative wins per player plus a draw counter, kept
+  across as many rounds as you want.
+- **Three AI difficulties** — Easy (random), Medium (win/block heuristic), and
+  Hard (unbeatable minimax).
+- **Fair rounds** — the starting player alternates every round.
+- **Polished feel** — dark glass aesthetic, stroke-drawn X/O marks, animated
+  winning line, score-bump and turn indicators, responsive down to mobile.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + TypeScript + Vite 8
+- Vitest for game-logic unit tests
+- oxlint for linting
+- Zero runtime dependencies beyond React — all styling is hand-crafted CSS.
 
-## Expanding the Oxlint configuration
+## Getting started
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Commands
+
+| Command          | What it does                       |
+| ---------------- | ---------------------------------- |
+| `npm run dev`    | Start the dev server               |
+| `npm run build`  | Type-check + production build      |
+| `npm run test`   | Run the Vitest unit tests          |
+| `npm run lint`   | Run oxlint                         |
+| `npm run preview`| Preview the production build       |
+
+## Project layout
+
+```
+src/
+  game/          Pure, framework-free game rules and AI (unit-tested)
+    logic.ts     Board model, win/draw detection, move helpers
+    ai.ts        Difficulty tiers + minimax
+  components/    SetupScreen, GameScreen, Scoreboard, Board
+  App.tsx        Session state (scores, rounds, screen routing)
+```
