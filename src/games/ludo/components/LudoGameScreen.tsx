@@ -10,7 +10,7 @@ import {
   type GameState,
 } from '../game/engine'
 import type { LudoSession } from '../types'
-import Dice from './Dice'
+import Dice from '../../../shared/Dice'
 import LudoBoard from './LudoBoard'
 
 const ROLL_ANIM_MS = 620

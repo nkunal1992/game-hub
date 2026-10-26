@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { GameId } from './games'
 import LudoGame from './games/ludo/LudoGame'
+import SnakesGame from './games/snakes/SnakesGame'
 import TicTacToe from './games/tictactoe/TicTacToe'
 import TopBar from './shared/TopBar'
 import { useTheme } from './shared/theme'
@@ -17,6 +18,9 @@ function App() {
       </div>
       <div className={`game-pane${game === 'ludo' ? '' : ' game-pane--hidden'}`}>
         <LudoGame />
+      </div>
+      <div className={`game-pane${game === 'snakes' ? '' : ' game-pane--hidden'}`}>
+        <SnakesGame />
       </div>
     </div>
   )

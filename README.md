@@ -4,7 +4,7 @@
 
 **[▶ Play it live](https://nkunal-game-hub.netlify.app)**
 
-A bold, playful game hub. Two classic board games behind a tab switcher —
+A bold, playful game hub. Three classic board games behind a tab switcher —
 **Tic Tac Toe** and **Ludo** — each with its own session: play with friends on
 the same screen or against the computer, with named players, emoji avatars,
 and looping win celebrations. Fully silent — no audio.
