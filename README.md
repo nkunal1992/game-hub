@@ -6,7 +6,7 @@
 
 A bold, playful, session-based Tic Tac Toe web app. Play unlimited rounds — or a
 Best-of-3 / Best-of-5 match — against a friend on the same screen or against the
-computer, with named players, emoji avatars, confetti, sound effects, and a
+computer, with named players, emoji avatars, confetti, and a
 live match-room scoreboard.
 
 ## Features
@@ -26,19 +26,15 @@ live match-room scoreboard.
 - **Three AI difficulties** — Easy (random), Medium (win/block heuristic), Hard
   (unbeatable minimax).
 - **Fair rounds** — the starting player alternates every round.
-- **Celebration FX** — looping confetti cannons + emoji rain + silly sounds
-  (WebAudio, no audio files) with a mute toggle; all motion respects
-  `prefers-reduced-motion`.
-- **Voice announcements** — cheerful spoken winner lines ("Yay, Ada wins!",
-  "Champion!") via the Web Speech API, plus a "la la la" tease jingle.
+- **Celebration FX** — looping confetti cannons + emoji rain on wins; all
+  motion respects `prefers-reduced-motion`. Fully silent — no audio.
 
 ## Stack
 
 - React 19 + TypeScript + Vite 8
 - Vitest for game-logic unit tests
 - oxlint for linting
-- Zero runtime dependencies beyond React — all styling is hand-crafted CSS,
-  sounds are synthesized in the browser.
+- Zero runtime dependencies beyond React — all styling is hand-crafted CSS.
 
 ## Getting started
 
@@ -65,7 +61,6 @@ src/
     logic.ts      Board model, win/draw detection, move helpers
     ai.ts         Difficulty tiers + minimax
     match.ts      Best-of series logic
-    sound.ts      WebAudio sfx engine
   components/     TopBar, SetupScreen, GameScreen, SidePanel, Board,
                   Confetti, AvatarPicker, MarkPicker, MarkGlyph
   marks.ts        Custom piece catalog (shapes + emoji marks)

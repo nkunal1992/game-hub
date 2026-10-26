@@ -4,7 +4,6 @@ import SetupScreen from './components/SetupScreen'
 import TopBar from './components/TopBar'
 import type { Player } from './game/logic'
 import { seriesWinner } from './game/match'
-import { isMuted, setMuted } from './game/sound'
 import { useTheme } from './theme'
 import type { HistoryEntry, RoundOutcome, Scores, SessionConfig } from './types'
 
@@ -17,7 +16,6 @@ function App() {
   const [round, setRound] = useState(1)
   const [history, setHistory] = useState<HistoryEntry[]>([])
   const [runId, setRunId] = useState(0)
-  const [muted, setMutedState] = useState(isMuted())
   const { theme, toggle: toggleTheme } = useTheme()
 
   const handleStart = (config: SessionConfig) => {
@@ -43,12 +41,6 @@ function App() {
     setHistory((h) => [...h, { round: h.length + 1, outcome }])
   }, [])
 
-  const handleToggleMute = () => {
-    const next = !muted
-    setMuted(next)
-    setMutedState(next)
-  }
-
   const starter: Player = round % 2 === 1 ? 'X' : 'O'
   const matchWinner = session ? seriesWinner(scores, session.matchFormat) : null
 
@@ -56,10 +48,8 @@ function App() {
     <div className="app-shell">
       <TopBar
         theme={theme}
-        muted={muted}
         round={session ? round : undefined}
         onToggleTheme={toggleTheme}
-        onToggleMute={handleToggleMute}
         onNewSession={session ? () => setSession(null) : undefined}
       />
       {session ? (

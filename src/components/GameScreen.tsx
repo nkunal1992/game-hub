@@ -9,8 +9,6 @@ import {
   type Board,
   type Player,
 } from '../game/logic'
-import { play } from '../game/sound'
-import { announceDraw, announceMatchWin, announceWin, stopVoice } from '../game/voice'
 import type { HistoryEntry, RoundOutcome, Scores, SessionConfig } from '../types'
 import GameBoard from './Board'
 import Celebration from './Celebration'
@@ -61,27 +59,19 @@ export default function GameScreen({
   const place = (index: number, mover: Player, from: Board) => {
     const next = applyMove(from, index, mover)
     setBoard(next)
-    play(mover === 'X' ? 'place-x' : 'place-o')
     const win = checkWinner(next)
     if (win) setResult({ type: 'win', winner: win.winner, line: win.line })
     else if (isDraw(next)) setResult({ type: 'draw' })
     else setTurn(opponent(mover))
   }
 
-  // Report the outcome + fanfare exactly once per round.
+  // Report the outcome exactly once per round.
   useEffect(() => {
     if (result && !reported.current) {
       reported.current = true
       onOutcome(result.type === 'draw' ? 'draw' : result.winner)
-      if (result.type === 'draw') {
-        play('draw')
-        announceDraw()
-      } else {
-        play(Math.random() < 0.5 ? 'win' : 'lalala')
-        announceWin(playerOf(result.winner).name)
-      }
     }
-  }, [result, onOutcome, playerOf])
+  }, [result, onOutcome])
 
   // Let the computer take its turn after a short, human-feeling pause.
   useEffect(() => {
@@ -93,18 +83,6 @@ export default function GameScreen({
     return () => clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [computerTurn, board, turn, config.difficulty])
-
-  // Match clinch gets the bigger fanfare + champion announcement.
-  const matchName = matchWinner ? playerOf(matchWinner).name : null
-  useEffect(() => {
-    if (matchName) {
-      play('celebrate')
-      announceMatchWin(matchName)
-    }
-  }, [matchName])
-
-  // Stop any in-flight announcement when the round unmounts.
-  useEffect(() => () => stopVoice(), [])
 
   const handleCellClick = (index: number) => {
     if (result || computerTurn || board[index] !== null) return

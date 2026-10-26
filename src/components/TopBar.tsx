@@ -11,34 +11,6 @@ function BrandMark() {
   )
 }
 
-function SpeakerIcon({ muted }: { muted: boolean }) {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-      <path
-        d="M4 9v6h4l5 4V5L8 9H4z"
-        fill="currentColor"
-      />
-      {muted ? (
-        <path
-          d="M16 9l5 6M21 9l-5 6"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          fill="none"
-        />
-      ) : (
-        <path
-          d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          fill="none"
-        />
-      )}
-    </svg>
-  )
-}
-
 function ThemeIcon({ theme }: { theme: Theme }) {
   return theme === 'dark' ? (
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -62,19 +34,15 @@ function ThemeIcon({ theme }: { theme: Theme }) {
 
 interface TopBarProps {
   theme: Theme
-  muted: boolean
   round?: number
   onToggleTheme: () => void
-  onToggleMute: () => void
   onNewSession?: () => void
 }
 
 export default function TopBar({
   theme,
-  muted,
   round,
   onToggleTheme,
-  onToggleMute,
   onNewSession,
 }: TopBarProps) {
   return (
@@ -85,15 +53,6 @@ export default function TopBar({
       </div>
       <div className="topbar-actions">
         {round !== undefined && <span className="round-pill">Round {round}</span>}
-        <button
-          type="button"
-          className="icon-btn"
-          onClick={onToggleMute}
-          aria-label={muted ? 'Unmute sounds' : 'Mute sounds'}
-          title={muted ? 'Unmute' : 'Mute'}
-        >
-          <SpeakerIcon muted={muted} />
-        </button>
         <button
           type="button"
           className="icon-btn"
