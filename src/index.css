@@ -1670,13 +1670,11 @@ input:focus {
 /* ---------- Dice ---------- */
 
 .dice-dock {
-  position: absolute;
-  left: 50%;
-  bottom: -18px;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .dice {
@@ -1883,54 +1881,79 @@ input:focus {
    Snakes & Ladders
    ============================================================ */
 
+.snakes-board {
+  background: var(--bg-2);
+}
+
 .sb-cell {
-  fill: var(--lb-cell);
-  stroke: var(--lb-grid);
-  stroke-width: 0.04;
+  fill: var(--surface);
+  stroke: var(--border);
+  stroke-width: 0.03;
 }
 
 .sb-cell--alt {
-  fill: #efe9ff;
-}
-
-[data-theme='light'] .sb-cell--alt {
-  fill: #f6f0ff;
+  fill: var(--surface-2);
 }
 
 .sb-num {
-  font-size: 0.26px;
+  font-size: 0.24px;
   font-weight: 800;
-  fill: rgba(61, 52, 120, 0.5);
+  fill: var(--faint);
   font-family: var(--font-body);
   pointer-events: none;
 }
 
+.sb-finish-star {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 0.06px rgba(255, 197, 61, 0.8));
+}
+
 .sb-rail {
-  stroke: #a2683a;
+  stroke: currentColor;
   stroke-width: 0.1;
   stroke-linecap: round;
+  opacity: 0.9;
 }
 
 .sb-rung {
-  stroke: #c68a52;
+  stroke: currentColor;
   stroke-width: 0.06;
   stroke-linecap: round;
+  opacity: 0.75;
 }
 
 .sb-snake-body {
   fill: none;
-  stroke-width: 0.26;
+  stroke-width: 0.28;
   stroke-linecap: round;
-  opacity: 0.88;
+  opacity: 0.95;
+}
+
+.sb-snake-belly {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.4);
+  stroke-width: 0.1;
+  stroke-linecap: round;
 }
 
 .sb-snake-head {
-  stroke: rgba(255, 255, 255, 0.85);
+  stroke: rgba(255, 255, 255, 0.9);
   stroke-width: 0.05;
 }
 
 .sb-snake-eye {
   fill: #ffffff;
+}
+
+.sb-snake-pupil {
+  fill: #221a3f;
+}
+
+.sb-snake-tongue {
+  stroke: #ff4d61;
+  stroke-width: 0.045;
+  stroke-linecap: round;
+  fill: none;
 }
 
 .sb-token--sliding .lb-token-body {
