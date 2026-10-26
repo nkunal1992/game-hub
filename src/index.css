@@ -1882,62 +1882,72 @@ input:focus {
    ============================================================ */
 
 .snakes-board {
-  background: var(--bg-2);
+  background: #f6efe3;
 }
 
 .sb-cell {
-  fill: var(--surface);
-  stroke: var(--border);
-  stroke-width: 0.03;
+  stroke: #ffffff;
+  stroke-width: 0.05;
 }
 
-.sb-cell--alt {
-  fill: var(--surface-2);
-}
+.sb-row-0 { fill: #ffe9a8; }
+.sb-row-1 { fill: #ffd2d2; }
+.sb-row-2 { fill: #d6ecff; }
+.sb-row-3 { fill: #d8f5d0; }
+.sb-row-4 { fill: #f3dcff; }
+.sb-row-5 { fill: #ffe0c2; }
+.sb-row-6 { fill: #d0f0ee; }
+.sb-row-7 { fill: #ffd9ec; }
+.sb-row-8 { fill: #e2ecc9; }
+.sb-row-9 { fill: #dcd8ff; }
 
 .sb-num {
-  font-size: 0.24px;
+  font-size: 0.26px;
   font-weight: 800;
-  fill: var(--faint);
+  fill: #4a3f6b;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 0.07;
+  paint-order: stroke fill;
   font-family: var(--font-body);
   pointer-events: none;
 }
 
 .sb-finish-star {
-  fill: var(--accent);
-  filter: drop-shadow(0 0 0.06px rgba(255, 197, 61, 0.8));
+  fill: #e8a013;
+  stroke: #ffffff;
+  stroke-width: 0.04;
+  filter: drop-shadow(0 0 0.06px rgba(232, 160, 19, 0.8));
 }
 
 .sb-rail {
   stroke: currentColor;
-  stroke-width: 0.1;
+  stroke-width: 0.08;
   stroke-linecap: round;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .sb-rung {
   stroke: currentColor;
-  stroke-width: 0.06;
+  stroke-width: 0.05;
   stroke-linecap: round;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .sb-snake-body {
   fill: none;
-  stroke-width: 0.28;
   stroke-linecap: round;
-  opacity: 0.95;
+  opacity: 0.92;
 }
 
 .sb-snake-belly {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.4);
-  stroke-width: 0.1;
+  stroke: rgba(255, 255, 255, 0.5);
+  stroke-width: 0.09;
   stroke-linecap: round;
 }
 
 .sb-snake-head {
-  stroke: rgba(255, 255, 255, 0.9);
+  stroke: rgba(255, 255, 255, 0.95);
   stroke-width: 0.05;
 }
 
