@@ -14,6 +14,11 @@ live match-room scoreboard.
 - **Best-of matches** — Free play, Best of 3, or Best of 5; clinch a match to
   get the trophy screen and a rematch option.
 - **Named players + emoji avatars** — picked at session start; 🤖 for the CPU.
+- **Custom board pieces** — each player picks a mark: 11 stroke-drawn shapes
+  (cross, circle, triangle, square, diamond, pentagon, hexagon, star, heart,
+  plus, bolt) or 17 fun emoji (🐸🦄🦖🐝🐙🐢🦊🐼🐱🐶🦁🐥🐠👻🚀🍕🤖) —
+  great for kids. Marks render on the board, in ghost previews, player cards,
+  and screen-reader labels.
 - **Three AI difficulties** — Easy (random), Medium (win/block heuristic), Hard
   (unbeatable minimax).
 - **Fair rounds** — the starting player alternates every round.
@@ -55,7 +60,9 @@ src/
     match.ts      Best-of series logic
     sound.ts      WebAudio sfx engine
   components/     TopBar, SetupScreen, GameScreen, SidePanel, Board,
-                  Confetti, AvatarPicker
+                  Confetti, AvatarPicker, MarkPicker, MarkGlyph
+  marks.ts        Custom piece catalog (shapes + emoji marks)
+  avatars.ts      Player avatar emoji list
   theme.ts        Dark/light theme hook (localStorage + media query)
   App.tsx         Session state (scores, rounds, history, match)
 ```

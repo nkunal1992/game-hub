@@ -9,6 +9,8 @@ export interface PlayerInfo {
   symbol: Player
   isComputer: boolean
   avatar: string
+  /** Chosen board piece — id into the mark catalog (src/marks.ts). */
+  mark: string
 }
 
 export interface SessionConfig {

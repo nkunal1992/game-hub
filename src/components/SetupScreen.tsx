@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import type { Difficulty } from '../game/ai'
 import { MATCH_FORMATS, type MatchFormat } from '../game/match'
-import type { GameMode, SessionConfig } from '../types'
 import { AVATARS, COMPUTER_AVATAR } from '../avatars'
+import { COMPUTER_MARK, DEFAULT_MARK_O, DEFAULT_MARK_X, MARKS } from '../marks'
+import type { GameMode, SessionConfig } from '../types'
 import AvatarPicker from './AvatarPicker'
+import MarkGlyph from './MarkGlyph'
+import MarkPicker from './MarkPicker'
 
 interface SetupScreenProps {
   initial: SessionConfig | null
@@ -28,6 +31,8 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
   const [avatarO, setAvatarO] = useState(
     initial && !initial.players[1].isComputer ? initial.players[1].avatar : AVATARS[1],
   )
+  const [markX, setMarkX] = useState(initial?.players[0].mark ?? DEFAULT_MARK_X)
+  const [markO, setMarkO] = useState(initial?.players[1].mark ?? DEFAULT_MARK_O)
   const [difficulty, setDifficulty] = useState<Difficulty>(
     initial?.difficulty ?? 'medium',
   )
@@ -41,12 +46,24 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
       difficulty,
       matchFormat,
       players: [
-        { name: nameX.trim() || 'Player 1', symbol: 'X', isComputer: false, avatar: avatarX },
+        {
+          name: nameX.trim() || 'Player 1',
+          symbol: 'X',
+          isComputer: false,
+          avatar: avatarX,
+          mark: markX,
+        },
         {
           name: mode === 'ai' ? 'Computer' : nameO.trim() || 'Player 2',
           symbol: 'O',
           isComputer: mode === 'ai',
           avatar: mode === 'ai' ? COMPUTER_AVATAR : avatarO,
+          mark:
+            mode === 'ai'
+              ? COMPUTER_MARK
+              : markO === markX
+                ? MARKS.find((m) => m.id !== markX)!.id
+                : markO,
         },
       ],
     })
@@ -98,6 +115,16 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
               />
             </label>
             <AvatarPicker value={avatarX} onChange={setAvatarX} aria-label="Player 1 avatar" />
+            <div className="field">
+              <span className="field-label">Piece</span>
+              <MarkPicker
+                value={markX}
+                onChange={setMarkX}
+                exclude={mode === 'local' ? markO : COMPUTER_MARK}
+                seat="X"
+                aria-label="Player 1 piece"
+              />
+            </div>
           </div>
           {mode === 'local' ? (
             <div className="player-setup">
@@ -114,6 +141,16 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
                 />
               </label>
               <AvatarPicker value={avatarO} onChange={setAvatarO} aria-label="Player 2 avatar" />
+              <div className="field">
+                <span className="field-label">Piece</span>
+                <MarkPicker
+                  value={markO}
+                  onChange={setMarkO}
+                  exclude={markX}
+                  seat="O"
+                  aria-label="Player 2 piece"
+                />
+              </div>
             </div>
           ) : (
             <div className="player-setup player-setup--cpu">
@@ -123,6 +160,9 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
               <div className="cpu-card">
                 <span className="cpu-avatar">{COMPUTER_AVATAR}</span>
                 <span className="cpu-name">Computer</span>
+                <span className="cpu-mark" title="Robot piece">
+                  <MarkGlyph mark={COMPUTER_MARK} seat="O" mini />
+                </span>
               </div>
             </div>
           )}

@@ -1,6 +1,7 @@
 import type { Player } from '../game/logic'
 import { winsNeeded } from '../game/match'
 import type { HistoryEntry, PlayerInfo, Scores, SessionConfig } from '../types'
+import MarkGlyph from './MarkGlyph'
 
 interface PlayerCardProps {
   player: PlayerInfo
@@ -22,7 +23,10 @@ function PlayerCard({ player, score, active, needed }: PlayerCardProps) {
           {player.isComputer ? <span className="player-badge">CPU</span> : null}
         </span>
         <span className="player-symbol">
-          plays <b className={`tint-${sym}`}>{player.symbol}</b>
+          plays{' '}
+          <span className={`mini-mark mini-mark--${sym}`}>
+            <MarkGlyph mark={player.mark} seat={player.symbol} mini />
+          </span>
         </span>
       </div>
       <span key={score} className="player-score">

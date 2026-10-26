@@ -51,6 +51,7 @@ export default function GameScreen({
 
   const playerOf = (symbol: Player) =>
     config.players.find((p) => p.symbol === symbol) ?? config.players[0]
+  const marks = { X: playerOf('X').mark, O: playerOf('O').mark }
   const computer = config.players.find((p) => p.isComputer)
   const computerTurn = !result && !!computer && computer.symbol === turn
 
@@ -117,6 +118,7 @@ export default function GameScreen({
           <GameBoard
             board={board}
             turn={turn}
+            marks={marks}
             winLine={result?.type === 'win' ? result.line : null}
             winner={result?.type === 'win' ? result.winner : null}
             interactive={!result && !computerTurn}

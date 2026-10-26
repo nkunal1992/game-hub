@@ -477,6 +477,91 @@ input:focus {
   color: var(--muted);
 }
 
+/* ---------- Mark (piece) picker ---------- */
+
+.mark-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mark-group-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.mark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+  gap: 6px;
+}
+
+.mark-opt {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: 11px;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-spring), border-color 0.15s ease,
+    background 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.mark-opt:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.1);
+  border-color: var(--border-2);
+}
+
+.mark-opt:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.mark-opt--active {
+  box-shadow: 0 3px 0 var(--edge);
+  transform: scale(1.06);
+}
+
+.mark-picker--x .mark-opt--active {
+  background: var(--x-tint);
+  border-color: var(--x);
+}
+
+.mark-picker--o .mark-opt--active {
+  background: var(--o-tint);
+  border-color: var(--o);
+}
+
+.mark-opt .mark {
+  width: 22px;
+  height: 22px;
+}
+
+.mark-opt .mark-stroke {
+  stroke-width: 13;
+}
+
+.mini-mark {
+  display: inline-flex;
+  width: 17px;
+  height: 17px;
+  vertical-align: -3px;
+  margin-left: 3px;
+}
+
+.cpu-mark {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  flex: none;
+}
+
 /* ---------- Segmented control ---------- */
 
 .segmented {
@@ -662,6 +747,16 @@ input:focus {
   animation: mark-pop 0.4s var(--ease-spring) both;
 }
 
+.mark--emoji text {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+}
+
+.mark--mini {
+  width: 100%;
+  height: 100%;
+  animation: none;
+}
+
 @keyframes mark-pop {
   0% {
     transform: scale(0.3) rotate(-14deg);
@@ -683,14 +778,21 @@ input:focus {
   animation: mark-draw 0.26s var(--ease-out) forwards;
 }
 
-.mark-x .mark-stroke {
+.mark--x .mark-stroke {
   stroke: var(--x);
   filter: drop-shadow(0 0 8px var(--x));
 }
 
-.mark-o .mark-stroke {
+.mark--o .mark-stroke {
   stroke: var(--o);
   filter: drop-shadow(0 0 8px var(--o));
+}
+
+.mark--mini .mark-stroke {
+  stroke-width: 16;
+  animation: none;
+  stroke-dashoffset: 0;
+  filter: none;
 }
 
 .mark-stroke--2 {

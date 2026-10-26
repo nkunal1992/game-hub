@@ -1,21 +1,6 @@
 import { LINES, type Board, type Player } from '../game/logic'
-
-function Mark({ symbol, ghost = false }: { symbol: Player; ghost?: boolean }) {
-  const cls = `mark mark-${symbol.toLowerCase()}${ghost ? ' mark--ghost' : ''}`
-  if (symbol === 'X') {
-    return (
-      <svg viewBox="0 0 100 100" className={cls} aria-hidden="true">
-        <line className="mark-stroke mark-stroke--1" x1="28" y1="28" x2="72" y2="72" pathLength={1} />
-        <line className="mark-stroke mark-stroke--2" x1="72" y1="28" x2="28" y2="72" pathLength={1} />
-      </svg>
-    )
-  }
-  return (
-    <svg viewBox="0 0 100 100" className={cls} aria-hidden="true">
-      <circle className="mark-stroke" cx="50" cy="50" r="23" pathLength={1} />
-    </svg>
-  )
-}
+import { markDef } from '../marks'
+import MarkGlyph from './MarkGlyph'
 
 /** Pixel-space endpoints for each winning line on a 300×300 board. */
 const LINE_PATHS: Record<number, [number, number, number, number]> = {
@@ -32,6 +17,8 @@ const LINE_PATHS: Record<number, [number, number, number, number]> = {
 interface BoardProps {
   board: Board
   turn: Player
+  /** seat → chosen mark id */
+  marks: Record<Player, string>
   winLine: readonly number[] | null
   winner: Player | null
   interactive: boolean
@@ -40,7 +27,7 @@ interface BoardProps {
 
 const ROW_COL = ['top-left', 'top-center', 'top-right', 'middle-left', 'middle-center', 'middle-right', 'bottom-left', 'bottom-center', 'bottom-right']
 
-export default function GameBoard({ board, turn, winLine, winner, interactive, onCellClick }: BoardProps) {
+export default function GameBoard({ board, turn, marks, winLine, winner, interactive, onCellClick }: BoardProps) {
   const lineIdx = winLine
     ? LINES.findIndex((l) => l[0] === winLine[0] && l[1] === winLine[1] && l[2] === winLine[2])
     : -1
@@ -50,6 +37,7 @@ export default function GameBoard({ board, turn, winLine, winner, interactive, o
     <div className="board" role="grid" aria-label="Tic tac toe board">
       {board.map((cell, i) => {
         const playable = interactive && cell === null
+        const cellMark = cell ? marks[cell] : null
         return (
           <button
             key={i}
@@ -58,10 +46,18 @@ export default function GameBoard({ board, turn, winLine, winner, interactive, o
             className={`cell${cell ? ` cell--filled cell--${cell.toLowerCase()}` : ''}${winSet.has(i) ? ' cell--win' : ''}`}
             style={{ animationDelay: `${i * 24}ms` }}
             disabled={!playable}
-            aria-label={cell ? `${ROW_COL[i]}, ${cell}` : `${ROW_COL[i]}, place ${turn}`}
+            aria-label={
+              cell
+                ? `${ROW_COL[i]}, ${markDef(marks[cell]).label}`
+                : `${ROW_COL[i]}, place ${markDef(marks[turn]).label}`
+            }
             onClick={() => onCellClick(i)}
           >
-            {cell ? <Mark symbol={cell} /> : playable ? <Mark symbol={turn} ghost /> : null}
+            {cell && cellMark ? (
+              <MarkGlyph mark={cellMark} seat={cell} />
+            ) : playable ? (
+              <MarkGlyph mark={marks[turn]} seat={turn} ghost />
+            ) : null}
           </button>
         )
       })}
