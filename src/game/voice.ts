@@ -3,23 +3,26 @@
 import { isMuted } from './sound'
 
 const WIN_LINES = [
-  'Yay, {name} wins!',
-  'Woohoo! {name} did it!',
-  'Awesome, {name}!',
-  '{name} is the winner! Way to go!',
-  'Yes yes yes! {name} takes it!',
+  'WOOHOO! {name} wins the round!',
+  'Oh my gosh oh my gosh! {name} actually did it!',
+  'Yippie yo! {name} takes the win!',
+  'Ding ding ding! {name} is the winner!',
+  '{name} is on FIRE! What a move!',
+  'Unbelievable! {name} crushed it!',
 ]
 
 const MATCH_LINES = [
-  '{name} wins the whole match! Champion!',
-  'Amazing! {name} is the match champion!',
-  'Hooray hooray! {name} takes the match!',
+  'CHAMPION ALERT! {name} wins the whole match!',
+  'Everybody stand up and cheer for {name}, the match champion!',
+  '{name} is the Tic Tac Toe MASTER! Match won!',
+  'It is official! {name} is the champion of champions!',
 ]
 
 const DRAW_LINES = [
-  "It's a draw! Good game everybody!",
-  'A tie! Nobody wins this one!',
-  'So close! That round was a draw!',
+  "It's a draw! You are BOTH equally awesome!",
+  'Tie game! Shake hands, you two!',
+  'Nobody wins?! Run it back!',
+  'A draw! You two are TOO evenly matched!',
 ]
 
 /** Pick a random line and interpolate {name}. */
@@ -42,8 +45,8 @@ export function speak(text: string) {
   if (!s) return
   s.cancel() // never stack announcements
   const u = new SpeechSynthesisUtterance(text)
-  u.pitch = 1.3 // cheerful, kid-friendly
-  u.rate = 1.05
+  u.pitch = 1.45 // cartoon-hype energy
+  u.rate = 1.1
   u.volume = 1
   s.speak(u)
 }
