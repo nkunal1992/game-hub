@@ -1,6 +1,13 @@
 /** Tiny synthesized sound effects — no audio assets, lazily-init AudioContext. */
 
-export type SoundName = 'place-x' | 'place-o' | 'win' | 'celebrate' | 'draw' | 'click'
+export type SoundName =
+  | 'place-x'
+  | 'place-o'
+  | 'win'
+  | 'lalala'
+  | 'celebrate'
+  | 'draw'
+  | 'click'
 
 const MUTE_KEY = 'ttt-muted'
 
@@ -85,6 +92,14 @@ export function play(name: SoundName) {
         tone(ac, f, 0.12 + i * 0.08, 0.22, 'triangle', 0.09),
       )
       break
+    case 'lalala': {
+      // the universal kids' tease: sol-mi-la-mi-soool
+      const tease = [392, 329.63, 440, 329.63, 392]
+      tease.forEach((f, i) =>
+        tone(ac, f, i * 0.16, i === tease.length - 1 ? 0.34 : 0.14, 'square', 0.055),
+      )
+      break
+    }
     case 'celebrate':
       // bigger slide whistle + fanfare + sparkle tail for match wins
       tone(ac, 240, 0, 0.38, 'sine', 0.08, 980)

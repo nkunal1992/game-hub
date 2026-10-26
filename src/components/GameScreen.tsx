@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { chooseMove } from '../game/ai'
 import {
   applyMove,
@@ -10,6 +10,7 @@ import {
   type Player,
 } from '../game/logic'
 import { play } from '../game/sound'
+import { announceDraw, announceMatchWin, announceWin, stopVoice } from '../game/voice'
 import type { HistoryEntry, RoundOutcome, Scores, SessionConfig } from '../types'
 import GameBoard from './Board'
 import Celebration from './Celebration'
@@ -49,8 +50,10 @@ export default function GameScreen({
   const [result, setResult] = useState<RoundResult | null>(null)
   const reported = useRef(false)
 
-  const playerOf = (symbol: Player) =>
-    config.players.find((p) => p.symbol === symbol) ?? config.players[0]
+  const playerOf = useCallback(
+    (symbol: Player) => config.players.find((p) => p.symbol === symbol) ?? config.players[0],
+    [config.players],
+  )
   const marks = { X: playerOf('X').mark, O: playerOf('O').mark }
   const computer = config.players.find((p) => p.isComputer)
   const computerTurn = !result && !!computer && computer.symbol === turn
@@ -70,9 +73,15 @@ export default function GameScreen({
     if (result && !reported.current) {
       reported.current = true
       onOutcome(result.type === 'draw' ? 'draw' : result.winner)
-      play(result.type === 'draw' ? 'draw' : 'win')
+      if (result.type === 'draw') {
+        play('draw')
+        announceDraw()
+      } else {
+        play(Math.random() < 0.5 ? 'win' : 'lalala')
+        announceWin(playerOf(result.winner).name)
+      }
     }
-  }, [result, onOutcome])
+  }, [result, onOutcome, playerOf])
 
   // Let the computer take its turn after a short, human-feeling pause.
   useEffect(() => {
@@ -85,10 +94,17 @@ export default function GameScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [computerTurn, board, turn, config.difficulty])
 
-  // Match clinch gets the bigger fanfare.
+  // Match clinch gets the bigger fanfare + champion announcement.
+  const matchName = matchWinner ? playerOf(matchWinner).name : null
   useEffect(() => {
-    if (matchWinner) play('celebrate')
-  }, [matchWinner])
+    if (matchName) {
+      play('celebrate')
+      announceMatchWin(matchName)
+    }
+  }, [matchName])
+
+  // Stop any in-flight announcement when the round unmounts.
+  useEffect(() => () => stopVoice(), [])
 
   const handleCellClick = (index: number) => {
     if (result || computerTurn || board[index] !== null) return

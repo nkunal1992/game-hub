@@ -26,8 +26,11 @@ live match-room scoreboard.
 - **Three AI difficulties** — Easy (random), Medium (win/block heuristic), Hard
   (unbeatable minimax).
 - **Fair rounds** — the starting player alternates every round.
-- **Celebration FX** — confetti burst + synthesized sounds (WebAudio, no audio
-  files) with a mute toggle; all motion respects `prefers-reduced-motion`.
+- **Celebration FX** — looping confetti cannons + emoji rain + silly sounds
+  (WebAudio, no audio files) with a mute toggle; all motion respects
+  `prefers-reduced-motion`.
+- **Voice announcements** — cheerful spoken winner lines ("Yay, Ada wins!",
+  "Champion!") via the Web Speech API, plus a "la la la" tease jingle.
 
 ## Stack
 
