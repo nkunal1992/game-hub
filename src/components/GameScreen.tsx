@@ -12,7 +12,7 @@ import {
 import { play } from '../game/sound'
 import type { HistoryEntry, RoundOutcome, Scores, SessionConfig } from '../types'
 import GameBoard from './Board'
-import Confetti from './Confetti'
+import Celebration from './Celebration'
 import SidePanel from './SidePanel'
 
 type RoundResult =
@@ -85,6 +85,11 @@ export default function GameScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [computerTurn, board, turn, config.difficulty])
 
+  // Match clinch gets the bigger fanfare.
+  useEffect(() => {
+    if (matchWinner) play('celebrate')
+  }, [matchWinner])
+
   const handleCellClick = (index: number) => {
     if (result || computerTurn || board[index] !== null) return
     place(index, turn, board)
@@ -126,7 +131,7 @@ export default function GameScreen({
           />
 
           {result?.type === 'win' && (
-            <Confetti winner={result.winner} big={!!matchWinner} />
+            <Celebration winner={result.winner} mark={roundWinner!.mark} big={!!matchWinner} />
           )}
 
           {result && matchWinnerInfo && (

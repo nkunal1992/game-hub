@@ -1272,6 +1272,42 @@ input:focus {
   }
 }
 
+/* ---------- Celebration (full-screen loop) ---------- */
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cannon {
+  position: absolute;
+  top: 80%;
+  width: 0;
+  height: 0;
+}
+
+.rain-emoji {
+  position: absolute;
+  top: -8%;
+  animation: rain-fall linear infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+}
+
+@keyframes rain-fall {
+  0% {
+    transform: translateY(0) rotate(-16deg);
+  }
+  50% {
+    transform: translateY(58vh) rotate(16deg);
+  }
+  100% {
+    transform: translateY(118vh) rotate(-16deg);
+  }
+}
+
 /* ---------- Responsive & motion ---------- */
 
 @media (max-width: 920px) {
@@ -1338,7 +1374,8 @@ input:focus {
     transition-duration: 0.01ms !important;
   }
 
-  .confetti-layer {
+  .confetti-layer,
+  .celebration {
     display: none;
   }
 }
