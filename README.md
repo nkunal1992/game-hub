@@ -1,5 +1,9 @@
 # Tic Tac Toe
 
+[![Deploy](https://github.com/nkunal1992/tic-tac-toe/actions/workflows/deploy.yml/badge.svg)](https://github.com/nkunal1992/tic-tac-toe/actions/workflows/deploy.yml)
+
+**[▶ Play it live](https://nkunal-tic-tac-toe.netlify.app)**
+
 A bold, playful, session-based Tic Tac Toe web app. Play unlimited rounds — or a
 Best-of-3 / Best-of-5 match — against a friend on the same screen or against the
 computer, with named players, emoji avatars, confetti, sound effects, and a
