@@ -131,6 +131,7 @@ export default function LudoGameScreen({
             seats={state.seats}
             tokens={state.tokens}
             movable={state.phase === 'move' && !isCpuTurn ? movableIds : []}
+            activeSeat={over ? undefined : state.turn}
             onTokenClick={(_, token) => doMove(token)}
           />
 
@@ -199,6 +200,7 @@ export default function LudoGameScreen({
               </span>
               <div className="player-meta">
                 <span className="player-name" title={s.name}>
+                  <i className={`seat-dot seat-dot--${s.color}`} aria-hidden="true" />
                   {s.name}
                   {s.isComputer ? <span className="player-badge">CPU</span> : null}
                 </span>

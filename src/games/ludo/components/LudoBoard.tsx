@@ -35,11 +35,13 @@ export interface BoardToken {
 }
 
 interface LudoBoardProps {
-  seats: { color: LudoColor }[]
+  seats: { color: LudoColor; avatar: string; name: string }[]
   /** tokens[seat][idx] progress — same shape as GameState.tokens */
   tokens: number[][]
   /** token ids the current player may move */
   movable: number[]
+  /** seat index currently taking a turn — its base glows */
+  activeSeat?: number
   onTokenClick?: (seat: number, token: number) => void
 }
 
@@ -52,7 +54,7 @@ const OFFSETS: [number, number][] = [
   [0.16, -0.16],
 ]
 
-export default function LudoBoard({ seats, tokens, movable, onTokenClick }: LudoBoardProps) {
+export default function LudoBoard({ seats, tokens, movable, activeSeat, onTokenClick }: LudoBoardProps) {
   const boardTokens = useMemo(() => {
     const list: BoardToken[] = []
     tokens.forEach((row, seat) =>
@@ -80,10 +82,20 @@ export default function LudoBoard({ seats, tokens, movable, onTokenClick }: Ludo
       {/* Base quadrants */}
       {COLOR_ORDER.map((color) => {
         const [r, c] = BASE_RECTS[color]
+        const seatIdx = seats.findIndex((s) => s.color === color)
+        const occupant = seatIdx >= 0 ? seats[seatIdx] : null
         return (
           <g key={color}>
-            <rect x={c} y={r} width={6} height={6} rx={0.7} className={`lb-base lb-base--${color}`} />
+            <rect
+              x={c} y={r} width={6} height={6} rx={0.7}
+              className={`lb-base lb-base--${color}${seatIdx === activeSeat ? ' lb-base--active' : ''}`}
+            />
             <rect x={c + 0.7} y={r + 0.7} width={4.6} height={4.6} rx={0.5} className="lb-base-pad" />
+            {occupant && (
+              <text x={c + 3} y={r + 3} className="lb-base-avatar" aria-hidden="true">
+                {occupant.avatar}
+              </text>
+            )}
             {BASE_SPOTS[color].map(([sr, sc], i) => (
               <circle key={i} cx={sc + 0.5} cy={sr + 0.5} r={0.42} className={`lb-spot lb-spot--${color}`} />
             ))}
