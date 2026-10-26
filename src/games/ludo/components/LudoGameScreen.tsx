@@ -113,6 +113,9 @@ export default function LudoGameScreen({
     <div className="arena ludo-arena">
       <section className="board-col">
         <p className="status" aria-live="polite">
+          <span className={`rules-pill rules-pill--${session.rules}`}>
+            {session.rules === 'classic' ? 'Classic' : 'Kids 😄'}
+          </span>
           {status}
           {isCpuTurn && (
             <span className="dots" aria-hidden="true">
