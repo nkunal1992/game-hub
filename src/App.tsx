@@ -8,11 +8,13 @@ const ZERO_SCORES: Scores = { X: 0, O: 0, draws: 0 }
 
 function App() {
   const [session, setSession] = useState<SessionConfig | null>(null)
+  const [lastConfig, setLastConfig] = useState<SessionConfig | null>(null)
   const [scores, setScores] = useState<Scores>(ZERO_SCORES)
   const [round, setRound] = useState(1)
 
   const handleStart = (config: SessionConfig) => {
     setSession(config)
+    setLastConfig(config)
     setScores(ZERO_SCORES)
     setRound(1)
   }
@@ -39,7 +41,7 @@ function App() {
           onNewSession={() => setSession(null)}
         />
       ) : (
-        <SetupScreen initial={session} onStart={handleStart} />
+        <SetupScreen initial={lastConfig} onStart={handleStart} />
       )}
     </div>
   )
