@@ -50,7 +50,7 @@ export default function LudoGameScreen({
   useEffect(() => () => timers.current.forEach(clearTimeout), [])
 
   const seat = state.seats[state.turn]
-  const movable = legalMoves(state)
+  const movable = useMemo(() => legalMoves(state), [state])
   const movableIds = useMemo(
     () => movable.map((t) => state.turn * 4 + t),
     [movable, state.turn],
@@ -79,6 +79,13 @@ export default function LudoGameScreen({
     else if (state.phase === 'move') after(CPU_THINK_MS, () => doMove(chooseToken(state)!))
   }, [isCpuTurn, state, doRoll, doMove])
 
+  // Exactly one legal move means there's no decision — play it for humans too.
+  useEffect(() => {
+    if (!over && !isCpuTurn && state.phase === 'move' && movable.length === 1) {
+      after(500, () => doMove(movable[0]))
+    }
+  }, [over, isCpuTurn, state.phase, movable, doMove])
+
   // Report the win to the session scoreboard exactly once.
   useEffect(() => {
     if (over && !reported.current) {
@@ -97,8 +104,8 @@ export default function LudoGameScreen({
           ? `${seat.name} is thinking…`
           : `${seat.name} — roll the dice`
         : lastRoll && 'value' in lastRoll
-          ? `${seat.name} rolled ${lastRoll.value} — pick a token`
-          : `${seat.name} — pick a token`
+          ? `${seat.name} rolled ${lastRoll.value} — tap a glowing token`
+          : `${seat.name} — tap a glowing token`
 
   const winnerSeat = over ? state.seats[state.winner!] : null
 

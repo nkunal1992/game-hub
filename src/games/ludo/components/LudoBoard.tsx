@@ -135,8 +135,12 @@ export default function LudoBoard({ seats, tokens, movable, onTokenClick }: Ludo
             role={canMove ? 'button' : undefined}
             aria-label={canMove ? `Move token ${t.token + 1}` : undefined}
           >
-            <circle r={0.36} className="lb-token-body" />
-            <circle r={0.14} cy={-0.06} className="lb-token-face" />
+            {canMove && <circle r={0.55} className="lb-token-ring" />}
+            <g className={canMove ? 'lb-token-bob' : undefined}>
+              <circle r={0.5} className="lb-token-hit" />
+              <circle r={0.36} className="lb-token-body" />
+              <circle r={0.14} cy={-0.06} className="lb-token-face" />
+            </g>
           </g>
         )
       })}
