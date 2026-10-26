@@ -1,4 +1,4 @@
-import { AVATARS } from '../avatars'
+import { AVATARS } from './avatars'
 
 interface AvatarPickerProps {
   value: string

@@ -1,24 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { Player } from '../game/logic'
-import { markDef } from '../marks'
-import { nextBurst, pickRainEmojis, type Burst } from '../celebration'
-import Confetti from './Confetti'
+import { nextBurst, pickRainEmojis, type Burst } from './party'
+import Confetti, { type ConfettiTint } from './Confetti'
 
 const MAX_LIVE_BURSTS = 6
 
 interface CelebrationProps {
-  winner: Player
-  /** Winner's mark id — emoji marks join the rain. */
-  mark: string
+  /** Winner's color — drives confetti palette. */
+  tint: ConfettiTint
+  /** Optional emoji (mark / avatar) that joins the rain every 4th drop. */
+  winEmoji?: string | null
   /** Match win = denser rain, faster cannons, trophies. */
   big?: boolean
 }
 
-export default function Celebration({ winner, mark, big = false }: CelebrationProps) {
-  const rain = useMemo(
-    () => pickRainEmojis(markDef(mark).emoji ?? null, big),
-    [mark, big],
-  )
+export default function Celebration({ tint, winEmoji = null, big = false }: CelebrationProps) {
+  const rain = useMemo(() => pickRainEmojis(winEmoji, big), [winEmoji, big])
   const [bursts, setBursts] = useState<Burst[]>([])
   const seq = useRef(0)
 
@@ -50,7 +46,7 @@ export default function Celebration({ winner, mark, big = false }: CelebrationPr
       ))}
       {bursts.map((b) => (
         <div key={b.id} className="cannon" style={{ left: `${b.x}%` }}>
-          <Confetti winner={winner} />
+          <Confetti tint={tint} />
         </div>
       ))}
     </div>

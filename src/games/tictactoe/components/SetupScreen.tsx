@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import type { Difficulty } from '../game/ai'
 import { MATCH_FORMATS, type MatchFormat } from '../game/match'
-import { AVATARS, COMPUTER_AVATAR } from '../avatars'
+import { AVATARS, COMPUTER_AVATAR } from '../../../shared/avatars'
 import { COMPUTER_MARK, DEFAULT_MARK_O, DEFAULT_MARK_X, MARKS } from '../marks'
 import type { GameMode, SessionConfig } from '../types'
-import AvatarPicker from './AvatarPicker'
+import AvatarPicker from '../../../shared/AvatarPicker'
 import MarkGlyph from './MarkGlyph'
 import MarkPicker from './MarkPicker'
 

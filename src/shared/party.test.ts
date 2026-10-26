@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { nextBurst, pickRainEmojis } from './celebration'
+import { nextBurst, pickRainEmojis } from './party'
 
 describe('pickRainEmojis', () => {
   it('returns the requested count for normal and big celebrations', () => {

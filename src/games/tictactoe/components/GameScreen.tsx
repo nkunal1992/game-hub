@@ -9,9 +9,10 @@ import {
   type Board,
   type Player,
 } from '../game/logic'
+import { markDef } from '../marks'
 import type { HistoryEntry, RoundOutcome, Scores, SessionConfig } from '../types'
+import Celebration from '../../../shared/Celebration'
 import GameBoard from './Board'
-import Celebration from './Celebration'
 import SidePanel from './SidePanel'
 
 type RoundResult =
@@ -125,7 +126,11 @@ export default function GameScreen({
           />
 
           {result?.type === 'win' && (
-            <Celebration winner={result.winner} mark={roundWinner!.mark} big={!!matchWinner} />
+            <Celebration
+              tint={result.winner.toLowerCase() as 'x' | 'o'}
+              winEmoji={markDef(roundWinner!.mark).emoji}
+              big={!!matchWinner}
+            />
           )}
 
           {result && matchWinnerInfo && (
@@ -189,8 +194,10 @@ export default function GameScreen({
         config={config}
         scores={scores}
         turn={turn}
+        round={round}
         roundOver={!!result}
         history={history}
+        onNewSession={onNewSession}
       />
     </div>
   )

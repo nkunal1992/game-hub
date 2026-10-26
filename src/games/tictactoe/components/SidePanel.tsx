@@ -48,11 +48,13 @@ interface SidePanelProps {
   config: SessionConfig
   scores: Scores
   turn: Player
+  round: number
   roundOver: boolean
   history: HistoryEntry[]
+  onNewSession: () => void
 }
 
-export default function SidePanel({ config, scores, turn, roundOver, history }: SidePanelProps) {
+export default function SidePanel({ config, scores, turn, round, roundOver, history, onNewSession }: SidePanelProps) {
   const needed = winsNeeded(config.matchFormat)
   const playerOf = (symbol: Player) => config.players.find((p) => p.symbol === symbol)
   const recent = history.slice(-8).reverse()
@@ -78,11 +80,18 @@ export default function SidePanel({ config, scores, turn, roundOver, history }: 
         needed={needed}
       />
 
-      {needed !== null && (
-        <p className="match-hint">
-          First to <b>{needed}</b> takes the match
-        </p>
-      )}
+      <p className="match-hint">
+        Round {round}
+        {needed !== null && (
+          <>
+            {' · '}First to <b>{needed}</b> takes the match
+          </>
+        )}
+      </p>
+
+      <button type="button" className="btn btn-ghost btn-sm panel-new" onClick={onNewSession}>
+        New session
+      </button>
 
       {recent.length > 0 && (
         <div className="history">

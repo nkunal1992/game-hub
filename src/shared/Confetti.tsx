@@ -1,8 +1,9 @@
 import { useMemo, type CSSProperties } from 'react'
-import type { Player } from '../game/logic'
+
+export type ConfettiTint = 'x' | 'o' | 'draw' | 'red' | 'green' | 'yellow' | 'blue'
 
 interface ConfettiProps {
-  winner: Player | 'draw'
+  tint: ConfettiTint
   /** Bigger burst for match wins. */
   big?: boolean
 }
@@ -18,10 +19,14 @@ interface Piece {
   round: boolean
 }
 
-const COLORS: Record<ConfettiProps['winner'], string[]> = {
-  X: ['var(--x)', 'var(--accent)', '#ffffff', 'var(--x)'],
-  O: ['var(--o)', 'var(--accent)', '#ffffff', 'var(--o)'],
+const PALETTES: Record<ConfettiTint, string[]> = {
+  x: ['var(--x)', 'var(--accent)', '#ffffff', 'var(--x)'],
+  o: ['var(--o)', 'var(--accent)', '#ffffff', 'var(--o)'],
   draw: ['var(--muted)', 'var(--accent)', '#ffffff'],
+  red: ['var(--ludo-red)', 'var(--accent)', '#ffffff', 'var(--ludo-red)'],
+  green: ['var(--ludo-green)', 'var(--accent)', '#ffffff', 'var(--ludo-green)'],
+  yellow: ['var(--ludo-yellow)', 'var(--accent)', '#ffffff', 'var(--ludo-yellow)'],
+  blue: ['var(--ludo-blue)', 'var(--accent)', '#ffffff', 'var(--ludo-blue)'],
 }
 
 function buildPieces(count: number, palette: string[]): Piece[] {
@@ -41,10 +46,10 @@ function buildPieces(count: number, palette: string[]): Piece[] {
   })
 }
 
-export default function Confetti({ winner, big = false }: ConfettiProps) {
+export default function Confetti({ tint, big = false }: ConfettiProps) {
   const pieces = useMemo<Piece[]>(
-    () => buildPieces(big ? 90 : 48, COLORS[winner]),
-    [winner, big],
+    () => buildPieces(big ? 90 : 48, PALETTES[tint] ?? PALETTES.draw),
+    [tint, big],
   )
 
   return (

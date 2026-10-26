@@ -1379,3 +1379,418 @@ input:focus {
     display: none;
   }
 }
+
+/* ============================================================
+   Game hub — tabs
+   ============================================================ */
+
+.game-tabs {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: 15px;
+}
+
+.game-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease,
+    transform 0.15s var(--ease-spring);
+}
+
+.game-tab:hover {
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.game-tab--active {
+  color: var(--text);
+  background: var(--surface-2);
+  box-shadow: 0 3px 0 var(--edge), inset 0 0 0 2px var(--border-2);
+}
+
+.game-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.game-pane--hidden {
+  display: none;
+}
+
+.brand-pip {
+  fill: var(--accent);
+}
+
+/* ============================================================
+   Ludo
+   ============================================================ */
+
+:root {
+  --ludo-red: #ff4d61;
+  --ludo-red-deep: #d92b42;
+  --ludo-red-tint: rgba(255, 77, 97, 0.17);
+  --ludo-green: #2fd07e;
+  --ludo-green-deep: #12a05a;
+  --ludo-green-tint: rgba(47, 208, 126, 0.17);
+  --ludo-yellow: #ffc53d;
+  --ludo-yellow-deep: #d99a06;
+  --ludo-yellow-tint: rgba(255, 197, 61, 0.2);
+  --ludo-blue: #38b6ff;
+  --ludo-blue-deep: #1891dd;
+  --ludo-blue-tint: rgba(56, 182, 255, 0.17);
+  --lb-cell: #ffffff;
+  --lb-grid: #2b2350;
+}
+
+[data-theme='light'] {
+  --ludo-red: #e11d48;
+  --ludo-red-deep: #be123c;
+  --ludo-red-tint: rgba(225, 29, 72, 0.14);
+  --ludo-green: #16a34a;
+  --ludo-green-deep: #15803d;
+  --ludo-green-tint: rgba(22, 163, 74, 0.14);
+  --ludo-yellow: #f5a623;
+  --ludo-yellow-deep: #d97706;
+  --ludo-yellow-tint: rgba(245, 166, 35, 0.18);
+  --ludo-blue: #0284c7;
+  --ludo-blue-deep: #0369a1;
+  --ludo-blue-tint: rgba(2, 132, 199, 0.14);
+  --lb-grid: #3d3478;
+}
+
+.tint-red { color: var(--ludo-red); }
+.tint-green { color: var(--ludo-green); }
+.tint-yellow { color: var(--ludo-yellow-deep); }
+.tint-blue { color: var(--ludo-blue); }
+
+.chip-red { background: var(--ludo-red); }
+.chip-green { background: var(--ludo-green); }
+.chip-yellow { background: var(--ludo-yellow); color: var(--on-accent); }
+.chip-blue { background: var(--ludo-blue); }
+
+/* ---------- Ludo setup ---------- */
+
+.setup-card--wide {
+  max-width: 720px;
+}
+
+.setup-title {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.setup-sub {
+  margin: 0 0 18px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.seat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.seat-card {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  background: var(--surface-2);
+}
+
+.seat-card--red { border-color: var(--ludo-red); }
+.seat-card--green { border-color: var(--ludo-green); }
+.seat-card--yellow { border-color: var(--ludo-yellow); }
+.seat-card--blue { border-color: var(--ludo-blue); }
+
+/* ---------- Ludo board ---------- */
+
+.board-wrap--ludo {
+  width: min(100%, 560px);
+}
+
+.ludo-board {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+  box-shadow: 0 6px 0 var(--edge), 0 18px 34px -18px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+.lb-base {
+  stroke: var(--lb-grid);
+  stroke-width: 0.06;
+}
+
+.lb-base--red { fill: var(--ludo-red); }
+.lb-base--green { fill: var(--ludo-green); }
+.lb-base--yellow { fill: var(--ludo-yellow); }
+.lb-base--blue { fill: var(--ludo-blue); }
+
+.lb-base-pad {
+  fill: var(--lb-cell);
+  stroke: var(--lb-grid);
+  stroke-width: 0.06;
+}
+
+.lb-spot {
+  fill: var(--lb-cell);
+  stroke-width: 0.08;
+}
+
+.lb-spot--red { stroke: var(--ludo-red); }
+.lb-spot--green { stroke: var(--ludo-green); }
+.lb-spot--yellow { stroke: var(--ludo-yellow); }
+.lb-spot--blue { stroke: var(--ludo-blue); }
+
+.lb-cell {
+  fill: var(--lb-cell);
+  stroke: var(--lb-grid);
+  stroke-width: 0.055;
+}
+
+.lb-cell--start-red { fill: var(--ludo-red); }
+.lb-cell--start-green { fill: var(--ludo-green); }
+.lb-cell--start-yellow { fill: var(--ludo-yellow); }
+.lb-cell--start-blue { fill: var(--ludo-blue); }
+
+.lb-cell--home-red { fill: var(--ludo-red); }
+.lb-cell--home-green { fill: var(--ludo-green); }
+.lb-cell--home-yellow { fill: var(--ludo-yellow); }
+.lb-cell--home-blue { fill: var(--ludo-blue); }
+
+.lb-star {
+  fill: var(--accent);
+  stroke: var(--lb-grid);
+  stroke-width: 0.04;
+}
+
+.lb-center {
+  stroke: var(--lb-grid);
+  stroke-width: 0.06;
+}
+
+.lb-center--red { fill: var(--ludo-red); }
+.lb-center--green { fill: var(--ludo-green); }
+.lb-center--yellow { fill: var(--ludo-yellow); }
+.lb-center--blue { fill: var(--ludo-blue); }
+
+/* ---------- Tokens ---------- */
+
+.lb-token {
+  transition: transform 0.38s var(--ease-spring);
+}
+
+.lb-token-body {
+  stroke: #ffffff;
+  stroke-width: 0.09;
+  filter: drop-shadow(0 0.06px 0 rgba(0, 0, 0, 0.45));
+}
+
+.lb-token--red .lb-token-body { fill: var(--ludo-red-deep); }
+.lb-token--green .lb-token-body { fill: var(--ludo-green-deep); }
+.lb-token--yellow .lb-token-body { fill: var(--ludo-yellow-deep); }
+.lb-token--blue .lb-token-body { fill: var(--ludo-blue-deep); }
+
+.lb-token-face {
+  fill: rgba(255, 255, 255, 0.85);
+}
+
+.lb-token--movable {
+  cursor: pointer;
+}
+
+.lb-token--movable .lb-token-body {
+  stroke: var(--accent);
+  stroke-width: 0.13;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: token-pulse 0.9s ease-in-out infinite;
+}
+
+.lb-token--movable:hover .lb-token-face {
+  fill: #ffffff;
+}
+
+@keyframes token-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+
+/* ---------- Dice ---------- */
+
+.dice-dock {
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dice {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+  width: 62px;
+  height: 62px;
+  padding: 11px;
+  background: var(--lb-cell);
+  border: 2px solid var(--border-2);
+  border-radius: 16px;
+  box-shadow: 0 5px 0 var(--edge), 0 12px 22px -12px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.14s var(--ease-spring), box-shadow 0.14s ease;
+}
+
+.dice:not(:disabled):hover {
+  transform: translateY(-3px) rotate(-4deg);
+  box-shadow: 0 8px 0 var(--edge), 0 16px 26px -12px rgba(0, 0, 0, 0.5);
+}
+
+.dice:not(:disabled):active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--edge);
+}
+
+.dice:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.dice-pip {
+  width: 9px;
+  height: 9px;
+  place-self: center;
+  border-radius: 50%;
+  background: var(--lb-grid);
+}
+
+.dice--rolling {
+  animation: dice-tumble 0.62s var(--ease-spring);
+}
+
+@keyframes dice-tumble {
+  0% { transform: rotate(0) scale(1); }
+  30% { transform: rotate(140deg) scale(1.15); }
+  60% { transform: rotate(260deg) scale(0.92); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.dice-callout {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+  animation: callout-pop 0.4s var(--ease-spring) both;
+}
+
+@keyframes callout-pop {
+  from { transform: scale(0.3) rotate(-12deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* ---------- Ludo player cards ---------- */
+
+.player-card--ludo .avatar {
+  font-size: 24px;
+}
+
+.avatar--red { background: var(--ludo-red-tint); }
+.avatar--green { background: var(--ludo-green-tint); }
+.avatar--yellow { background: var(--ludo-yellow-tint); }
+.avatar--blue { background: var(--ludo-blue-tint); }
+
+.player-card--active.player-card--red {
+  border-color: var(--ludo-red);
+  box-shadow: 0 4px 0 var(--edge), 0 0 0 4px var(--ludo-red-tint);
+}
+
+.player-card--active.player-card--green {
+  border-color: var(--ludo-green);
+  box-shadow: 0 4px 0 var(--edge), 0 0 0 4px var(--ludo-green-tint);
+}
+
+.player-card--active.player-card--yellow {
+  border-color: var(--ludo-yellow);
+  box-shadow: 0 4px 0 var(--edge), 0 0 0 4px var(--ludo-yellow-tint);
+}
+
+.player-card--active.player-card--blue {
+  border-color: var(--ludo-blue);
+  box-shadow: 0 4px 0 var(--edge), 0 0 0 4px var(--ludo-blue-tint);
+}
+
+.player-card--red .turn-dot { background: var(--ludo-red); }
+.player-card--green .turn-dot { background: var(--ludo-green); }
+.player-card--yellow .turn-dot { background: var(--ludo-yellow); }
+.player-card--blue .turn-dot { background: var(--ludo-blue); }
+
+.ludo-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tok {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  margin-left: 6px;
+  border-radius: 50%;
+}
+
+.tok--base { background: var(--faint); }
+.tok--track { background: var(--accent); }
+.tok--home { background: var(--ludo-green); }
+
+.panel-new {
+  align-self: center;
+  margin-top: 4px;
+}
+
+/* ---------- Ludo responsive ---------- */
+
+@media (max-width: 640px) {
+  .seat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-tabs {
+    order: 3;
+    width: 100%;
+  }
+
+  .game-tab {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+  }
+}

@@ -1,12 +1,15 @@
-import type { Theme } from '../theme'
+import { GAMES, type GameId } from '../games'
+import type { Theme } from './theme'
 
 function BrandMark() {
   return (
     <svg viewBox="0 0 48 48" className="brand-mark" aria-hidden="true">
       <rect x="1.5" y="1.5" width="45" height="45" rx="12" className="brand-tile" />
-      <path d="M17.5 1.5v45M30.5 1.5v45M1.5 17.5h45M1.5 30.5h45" className="brand-grid" />
-      <path d="M6.5 6.5l8 8M14.5 6.5l-8 8" className="brand-x" />
-      <circle cx="24" cy="37.5" r="4.6" className="brand-o" />
+      <circle cx="15" cy="15" r="4" className="brand-pip" />
+      <circle cx="33" cy="15" r="4" className="brand-pip" />
+      <circle cx="24" cy="24" r="4" className="brand-pip" />
+      <circle cx="15" cy="33" r="4" className="brand-pip" />
+      <circle cx="33" cy="33" r="4" className="brand-pip" />
     </svg>
   )
 }
@@ -34,25 +37,33 @@ function ThemeIcon({ theme }: { theme: Theme }) {
 
 interface TopBarProps {
   theme: Theme
-  round?: number
+  active: GameId
+  onSwitch: (game: GameId) => void
   onToggleTheme: () => void
-  onNewSession?: () => void
 }
 
-export default function TopBar({
-  theme,
-  round,
-  onToggleTheme,
-  onNewSession,
-}: TopBarProps) {
+export default function TopBar({ theme, active, onSwitch, onToggleTheme }: TopBarProps) {
   return (
     <header className="topbar">
       <div className="brand-row">
         <BrandMark />
-        <span className="wordmark">Tic·Tac·Toe</span>
+        <span className="wordmark">Game Hub</span>
       </div>
+      <nav className="game-tabs" role="tablist" aria-label="Games">
+        {GAMES.map((g) => (
+          <button
+            key={g.id}
+            type="button"
+            role="tab"
+            aria-selected={active === g.id}
+            className={`game-tab${active === g.id ? ' game-tab--active' : ''}`}
+            onClick={() => onSwitch(g.id)}
+          >
+            <span aria-hidden="true">{g.icon}</span> {g.label}
+          </button>
+        ))}
+      </nav>
       <div className="topbar-actions">
-        {round !== undefined && <span className="round-pill">Round {round}</span>}
         <button
           type="button"
           className="icon-btn"
@@ -62,11 +73,6 @@ export default function TopBar({
         >
           <ThemeIcon theme={theme} />
         </button>
-        {onNewSession && (
-          <button type="button" className="btn btn-ghost btn-sm" onClick={onNewSession}>
-            New session
-          </button>
-        )}
       </div>
     </header>
   )
