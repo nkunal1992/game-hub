@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import type { Difficulty } from '../game/ai'
+import { MATCH_FORMATS, type MatchFormat } from '../game/match'
 import type { GameMode, SessionConfig } from '../types'
+import { AVATARS, COMPUTER_AVATAR } from '../avatars'
+import AvatarPicker from './AvatarPicker'
 
 interface SetupScreenProps {
   initial: SessionConfig | null
@@ -13,17 +16,6 @@ const DIFFICULTIES: Array<{ value: Difficulty; label: string; blurb: string }> =
   { value: 'hard', label: 'Hard', blurb: 'Perfect play. Best you can hope for is a draw.' },
 ]
 
-function BrandMark() {
-  return (
-    <svg viewBox="0 0 48 48" className="brand-mark" aria-hidden="true">
-      <rect x="1.5" y="1.5" width="45" height="45" rx="11" className="brand-tile" />
-      <path d="M17.5 1.5v45M30.5 1.5v45M1.5 17.5h45M1.5 30.5h45" className="brand-grid" />
-      <path d="M6.5 6.5l8 8M14.5 6.5l-8 8" className="brand-x" />
-      <circle cx="24" cy="37.5" r="4.6" className="brand-o" />
-    </svg>
-  )
-}
-
 export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
   const [mode, setMode] = useState<GameMode>(initial?.mode ?? 'local')
   const [nameX, setNameX] = useState(
@@ -32,20 +24,29 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
   const [nameO, setNameO] = useState(
     initial && !initial.players[1].isComputer ? initial.players[1].name : '',
   )
+  const [avatarX, setAvatarX] = useState(initial?.players[0].avatar ?? AVATARS[0])
+  const [avatarO, setAvatarO] = useState(
+    initial && !initial.players[1].isComputer ? initial.players[1].avatar : AVATARS[1],
+  )
   const [difficulty, setDifficulty] = useState<Difficulty>(
     initial?.difficulty ?? 'medium',
+  )
+  const [matchFormat, setMatchFormat] = useState<MatchFormat>(
+    initial?.matchFormat ?? 'free',
   )
 
   const start = () => {
     onStart({
       mode,
       difficulty,
+      matchFormat,
       players: [
-        { name: nameX.trim() || 'Player 1', symbol: 'X', isComputer: false },
+        { name: nameX.trim() || 'Player 1', symbol: 'X', isComputer: false, avatar: avatarX },
         {
           name: mode === 'ai' ? 'Computer' : nameO.trim() || 'Player 2',
           symbol: 'O',
           isComputer: mode === 'ai',
+          avatar: mode === 'ai' ? COMPUTER_AVATAR : avatarO,
         },
       ],
     })
@@ -55,12 +56,6 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
 
   return (
     <div className="screen setup-screen">
-      <header className="brand">
-        <BrandMark />
-        <h1 className="wordmark">Tic Tac Toe</h1>
-        <p className="tagline">A match, not just a game.</p>
-      </header>
-
       <div className="card setup-card">
         <div className="field">
           <span className="field-label" id="mode-label">
@@ -88,11 +83,11 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
           </div>
         </div>
 
-        {mode === 'local' ? (
-          <div className="name-grid">
+        <div className={`name-grid${mode === 'ai' ? ' name-grid--single' : ''}`}>
+          <div className="player-setup">
             <label className="field">
               <span className="field-label">
-                <i className="chip chip-x">X</i> Player one
+                <i className="chip chip-x">X</i> {mode === 'ai' ? 'You' : 'Player one'}
               </span>
               <input
                 value={nameX}
@@ -102,64 +97,86 @@ export default function SetupScreen({ initial, onStart }: SetupScreenProps) {
                 autoComplete="off"
               />
             </label>
-            <label className="field">
-              <span className="field-label">
-                <i className="chip chip-o">O</i> Player two
-              </span>
-              <input
-                value={nameO}
-                onChange={(e) => setNameO(e.target.value)}
-                placeholder="Player 2"
-                maxLength={16}
-                autoComplete="off"
-              />
-            </label>
+            <AvatarPicker value={avatarX} onChange={setAvatarX} aria-label="Player 1 avatar" />
           </div>
-        ) : (
-          <>
-            <label className="field">
-              <span className="field-label">
-                <i className="chip chip-x">X</i> Your name
-              </span>
-              <input
-                value={nameX}
-                onChange={(e) => setNameX(e.target.value)}
-                placeholder="Player 1"
-                maxLength={16}
-                autoComplete="off"
-              />
-            </label>
-            <div className="field">
-              <span className="field-label">Difficulty</span>
-              <div className="segmented" role="radiogroup" aria-label="Difficulty">
-                {DIFFICULTIES.map((d) => (
-                  <button
-                    key={d.value}
-                    type="button"
-                    role="radio"
-                    aria-checked={difficulty === d.value}
-                    className={`segment${difficulty === d.value ? ' segment--active' : ''}`}
-                    onClick={() => setDifficulty(d.value)}
-                  >
-                    {d.label}
-                  </button>
-                ))}
-              </div>
-              <p className="field-hint">{blurb}</p>
+          {mode === 'local' ? (
+            <div className="player-setup">
+              <label className="field">
+                <span className="field-label">
+                  <i className="chip chip-o">O</i> Player two
+                </span>
+                <input
+                  value={nameO}
+                  onChange={(e) => setNameO(e.target.value)}
+                  placeholder="Player 2"
+                  maxLength={16}
+                  autoComplete="off"
+                />
+              </label>
+              <AvatarPicker value={avatarO} onChange={setAvatarO} aria-label="Player 2 avatar" />
             </div>
-            <p className="field-hint">
-              You play <b className="tint-x">X</b>, the computer plays{' '}
-              <b className="tint-o">O</b>. The first move alternates every round.
-            </p>
-          </>
+          ) : (
+            <div className="player-setup player-setup--cpu">
+              <span className="field-label">
+                <i className="chip chip-o">O</i> Opponent
+              </span>
+              <div className="cpu-card">
+                <span className="cpu-avatar">{COMPUTER_AVATAR}</span>
+                <span className="cpu-name">Computer</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {mode === 'ai' && (
+          <div className="field">
+            <span className="field-label">Difficulty</span>
+            <div className="segmented" role="radiogroup" aria-label="Difficulty">
+              {DIFFICULTIES.map((d) => (
+                <button
+                  key={d.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={difficulty === d.value}
+                  className={`segment${difficulty === d.value ? ' segment--active' : ''}`}
+                  onClick={() => setDifficulty(d.value)}
+                >
+                  {d.label}
+                </button>
+              ))}
+            </div>
+            <p className="field-hint">{blurb}</p>
+          </div>
         )}
+
+        <div className="field">
+          <span className="field-label">Match</span>
+          <div className="segmented" role="radiogroup" aria-label="Match format">
+            {MATCH_FORMATS.map((f) => (
+              <button
+                key={f.value}
+                type="button"
+                role="radio"
+                aria-checked={matchFormat === f.value}
+                className={`segment${matchFormat === f.value ? ' segment--active' : ''}`}
+                onClick={() => setMatchFormat(f.value)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <p className="field-hint">
+            {MATCH_FORMATS.find((f) => f.value === matchFormat)?.hint}
+            {matchFormat !== 'free' ? ' wins' : ' — scores reset only on a new session.'}
+          </p>
+        </div>
 
         <button type="button" className="btn btn-primary btn-lg" onClick={start}>
           Start match
         </button>
       </div>
 
-      <p className="footnote">Play as many rounds as you like — scores reset only when you start a new session.</p>
+      <p className="footnote">The first move alternates every round.</p>
     </div>
   )
 }
